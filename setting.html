@@ -15,7 +15,6 @@
         
         body {
             font-family: Helvetica;
-            background: #f3f4fb;
             font-size: 1.5em;
         }
         
@@ -27,24 +26,22 @@
             margin: 10px auto;
         }
         
-        .header button {
-            padding: 5px;
-        }
-        
         .link {
             display: flex;
             align-items: center;
             background: #fff;
-            box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0px 4px 5px rgba(194, 182, 149, 1);
             border-radius: 30px;
             padding: 10px 5px;
             margin-bottom: 10px;
+            z-index: 999;
         }
         
         .link .is-active {
-            color: #2a61d8;
-            background-color: #e7eef8;
+            color: #c2b695;
+            background-color: #3c3e3d;
             border-radius: 30px;
+            font-weight: bolder;
         }
         
         .link__name {
@@ -60,9 +57,14 @@
             transition: 0.3s;
         }
         
+        .link__name:hover {
+            background-color: #cfc6b6;
+            color: #3c3e3d;
+            transform: scale(1.1);
+        }
+        
         .container {
             display: flex;
-            margin: 10px;
             width: 100vw;
         }
         
@@ -70,37 +72,48 @@
             display: flex;
             background-color: #fff;
             flex-direction: column;
+            align-items: center;
             height: 100vh;
             width: 30vw;
-            padding-top: 10px;
-            border-radius: 30px;
+            padding-left: 3vh;
+            margin-top: 5vh;
         }
         
         .logo img {
             width: 220px;
-            margin: 0 auto;
+            box-shadow: 0px 0px 5px rgba(194, 182, 149, 1);
+            border-radius: 10px;
+            margin-bottom: 20px;
         }
         
         .logo__title {
             font-weight: 600;
             font-size: 24px;
-            color: #484848;
+            color: #3c3e3d;
+            margin-bottom: 20px;
         }
         
         .tabs {
             display: flex;
             flex-direction: column;
             width: 70vw;
-            padding: 0 10px;
-            height: 100vh;
+            height: 94vh;
+            background: #f3f4fb;
+            margin: 3vh;
+            border-radius: 30px;
         }
         
         .tabs__head {
             display: flex;
+            position: relative;
+            top: -45px;
             flex-direction: column;
-            background: #fff;
-            padding: 10px 5px;
+            background: #f3f4fb;
+            padding: 50px 10px;
             margin-bottom: 10px;
+            width: 25vw;
+            border-radius: 25px;
+            border: 2px solid #c2b695;
         }
         
         .tabs__toggle {
@@ -114,30 +127,32 @@
         
         .tabs__toggle:hover {
             background: #e7eef8;
-            border-radius: unset;
+            transform: scale(1.05);
         }
         
         .tabs__name {
             font-weight: 500;
             font-size: 14px;
-            color: #484848;
+            color: #6c6440;
+            line-height: 100%;
         }
         
         .tabs__body {
-            background: #fff;
-            box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.1);
             border-radius: 25px;
             padding: 30px;
             position: relative;
+            height: 100vh;
         }
         
         .tabs__title {
             font-weight: 600;
             font-size: 24px;
-            color: #484848;
+            color: #c2b695;
             margin-bottom: 20px;
-            background: #e7eef8;
-            padding: 15px 20px;
+            text-align: center;
+            background: #3c3e3d;
+            padding: 15px 50px;
+            border-radius: 20px;
         }
         
         .tabs__content {
@@ -145,33 +160,23 @@
         }
         
         .tabs__toggle.is-active {
-            background: #e7eef8;
+            background: #c2b695;
         }
         
         .tabs__toggle.is-active .tabs__name {
-            color: #2a61d8;
+            color: #3c3e3d;
+            font-weight: bolder;
         }
         
         .tabs__content.is-active {
             display: block;
         }
         
-        .text {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            width: 500px;
-        }
-        
-        .text:hover {
-            overflow: visible;
-        }
-        
         table {
             border-collapse: collapse;
             width: 100%;
-            border: 2px solid #f3f4fb;
             font-size: 16px;
+            padding: 20px;
         }
         
         td {
@@ -184,8 +189,8 @@
             padding: 8px;
         }
         
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
+        tr:nth-child(odd) {
+            background-color: #e7eef8;
         }
         
         td:nth-child(odd) {
@@ -212,13 +217,28 @@
         }
         
         .button {
-            color: #fff;
+            color: #c2b695;
             width: 100px;
-            background-color: #5684c5;
+            background-color: #484848;
             border-radius: 30px;
             border: unset;
-            box-shadow: 0px 4px 5px rgb(0 0 0 / 10%);
+            box-shadow: 0px 4px 5px rgba(194, 182, 149, 1);
             margin: 5px 0;
+            padding: 5px;
+            transition: 0.3s;
+        }
+        
+        .button:hover {
+            transform: scale(1.1);
+        }
+        
+        .status__box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            border: 2px solid #c2b695;
+            border-radius: 20px;
         }
     </style>
 </head>
@@ -254,171 +274,179 @@
             <div class="tabs__body">
                 <div class="tabs__content is-active">
                     <h2 class="tabs__title">NETWORK</h2>
-                    <table>
-                        <form action="/get">
-                            <tr>
-                                <td>Station SSID</td>
-                                <td><input type="text" name="sta_ssid" value=%sta_ssid%></td>
+                    <div class="status__box">
+                        <table>
+                            <form action="/get">
+                                <tr>
+                                    <td>Station SSID</td>
+                                    <td><input type="text" name="sta_ssid" value=%sta_ssid%></td>
+                                </tr>
+                                <tr>
+                                    <td>Station PASS</td>
+                                    <td><input type="text" name="sta_pass" value=%sta_pass%></td>
+                                </tr>
+                                <tr>
+                                    <td>AP SSID </td>
+                                    <td><input type="text" name="ap_ssid" value=%ap_ssid%></td>
+                                </tr>
+                                <tr>
+                                    <td>AP PASS</td>
+                                    <td><input type="text" name="ap_pass" value=%ap_pass%></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td><input class="button" type="submit" value="Submit" onclick="submitMessage()"></td>
+                                </tr>
+                            </form>
                             </tr>
-                            <tr>
-                                <td>Station PASS</td>
-                                <td><input type="text" name="sta_pass" value=%sta_pass%></td>
-                            </tr>
-                            <tr>
-                                <td>AP SSID </td>
-                                <td><input type="text" name="ap_ssid" value=%ap_ssid%></td>
-                            </tr>
-                            <tr>
-                                <td>AP PASS</td>
-                                <td><input type="text" name="ap_pass" value=%ap_pass%></td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td><input class="button" type="submit" value="Submit" onclick="submitMessage()"></td>
-                            </tr>
-                        </form>
-                        </tr>
-                    </table>
+                        </table>
+                    </div>
 
                 </div>
                 <div class="tabs__content">
                     <h2 class="tabs__title">CONNECTION</h2>
-                    <table>
-                        <form action="/get">
-                            <tr>
-                                <td>IP Address</td>
-                                <td><input type="text" name="ip_ipaddr" value=%ip_ipaddr%></td>
+                    <div class="status__box">
+                        <table>
+                            <form action="/get">
+                                <tr>
+                                    <td>IP Address</td>
+                                    <td><input type="text" name="ip_ipaddr" value=%ip_ipaddr%></td>
+                                </tr>
+                                <tr>
+                                    <td>Subnet Mask</td>
+                                    <td><input type="text" name="ip_subnet" value=%ip_subnet%></td>
+                                </tr>
+                                <tr>
+                                    <td>Default Gateway </td>
+                                    <td><input type="text" name="ip_gate" value=%ip_gate%></td>
+                                </tr>
+                                <tr>
+                                    <td>DNS Server</td>
+                                    <td><input type="text" name="ip_dns" value=%ip_dns%></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td><input class="button" type="submit" value="Submit" onclick="submitMessage()"></td>
+                                </tr>
+                            </form>
                             </tr>
-                            <tr>
-                                <td>Subnet Mask</td>
-                                <td><input type="text" name="ip_subnet" value=%ip_subnet%></td>
-                            </tr>
-                            <tr>
-                                <td>Default Gateway </td>
-                                <td><input type="text" name="ip_gate" value=%ip_gate%></td>
-                            </tr>
-                            <tr>
-                                <td>DNS Server</td>
-                                <td><input type="text" name="ip_dns" value=%ip_dns%></td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td><input class="button" type="submit" value="Submit" onclick="submitMessage()"></td>
-                            </tr>
-                        </form>
-                        </tr>
-                    </table>
+                        </table>
+                    </div>
                 </div>
                 <div class="tabs__content">
                     <h2 class="tabs__title">DEVICE</h2>
-                    <table>
-                        <form action="/get">
-                            <tr>
-                                <td>ID Product</td>
-                                <td><input type="text" name="id_pro" value=%id_pro%></td>
-                            </tr>
-                            <tr>
-                                <td>Category</td>
-                                <td><input type="text" name="category" value="Smart Power Line" disabled></td>
-                            </tr>
-                            <tr>
-                                <td>Target Server</td>
-                                <td><input type="text" name="server" value=%server%></td>
-                            </tr>
-                            <tr>
-                                <td>API Key</td>
-                                <td><input type="text" name="api_key" value=%api_key%></td>
-                            </tr>
-                            <tr>
-                                <td>Satwil</td>
-                                <td><input type="text" name="satwil" value=%satwil%></td>
-                            </tr>
-                            <tr>
-                                <td>Level</td>
-                                <td>
-                                    <select name="level">
+                    <div class="status__box">
+                        <table>
+                            <form action="/get">
+                                <tr>
+                                    <td>ID Product</td>
+                                    <td><input type="text" name="id_pro" value=%id_pro%></td>
+                                </tr>
+                                <tr>
+                                    <td>Category</td>
+                                    <td><input type="text" name="category" value="Smart Power Line" disabled></td>
+                                </tr>
+                                <tr>
+                                    <td>Target Server</td>
+                                    <td><input type="text" name="server" value=%server%></td>
+                                </tr>
+                                <tr>
+                                    <td>API Key</td>
+                                    <td><input type="text" name="api_key" value=%api_key%></td>
+                                </tr>
+                                <tr>
+                                    <td>Satwil</td>
+                                    <td><input type="text" name="satwil" value=%satwil%></td>
+                                </tr>
+                                <tr>
+                                    <td>Level</td>
+                                    <td>
+                                        <select name="level">
                                         <option value="polda">polda</option>
                                         <option value="polres">polres</option>
                                         <option value="mabes">mabes</option>
                                     </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Site</td>
-                                <td>
-                                    <select name="site">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Site</td>
+                                    <td>
+                                        <select name="site">
                                         <option value="rbs">rbs</option>
                                         <option value="mso">mso</option>
                                         <option value="cc">cc</option>
                                     </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Longitude</td>
-                                <td><input type="text" name="lng" value=%lng%></td>
-                            </tr>
-                            <tr>
-                                <td>Altitude</td>
-                                <td><input type="text" name="alt" value=%alt%></td>
-                            </tr>
-                            <tr>
-                                <td>Time Update</td>
-                                <td><input type="text" name="interval_update" value=%interval_update%></td>
-                            </tr>
-                            <tr>
-                                <td>Time Upload</td>
-                                <td><input type="text" name="interval_upload" value=%interval_upload%></td>
-                            </tr>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Longitude</td>
+                                    <td><input type="text" name="lng" value=%lng%></td>
+                                </tr>
+                                <tr>
+                                    <td>Altitude</td>
+                                    <td><input type="text" name="alt" value=%alt%></td>
+                                </tr>
+                                <tr>
+                                    <td>Time Update</td>
+                                    <td><input type="text" name="interval_update" value=%interval_update%></td>
+                                </tr>
+                                <tr>
+                                    <td>Time Upload</td>
+                                    <td><input type="text" name="interval_upload" value=%interval_upload%></td>
+                                </tr>
 
-                            <tr>
-                                <td></td>
-                                <td><input class="button" type="submit" value="Submit" onclick="submitMessage()"></td>
-                            </tr>
-                        </form>
-                    </table>
+                                <tr>
+                                    <td></td>
+                                    <td><input class="button" type="submit" value="Submit" onclick="submitMessage()"></td>
+                                </tr>
+                            </form>
+                        </table>
+                    </div>
                 </div>
                 <div class="tabs__content">
                     <h2 class="tabs__title">SENSOR CALIBRATION</h2>
-                    <table>
-                        <form action="/get">
-                            <tr>
-                                <td>Temperature</td>
-                                <td><input type="text" name="ctemp" value=%ctemp%></td>
-                            </tr>
-                            <tr>
-                                <td>Humidity</td>
-                                <td><input type="text" name="chumid" value=%chumid%></td>
-                            </tr>
-                            <tr>
-                                <td>Voltage R</td>
-                                <td><input type="text" name="cvr" value=%cvr%></td>
-                            </tr>
-                            <tr>
-                                <td>Voltage S</td>
-                                <td><input type="text" name="cvs" value=%cvs%></td>
-                            </tr>
-                            <tr>
-                                <td>Voltage T</td>
-                                <td><input type="text" name="cvt" value=%cvt%></td>
-                            </tr>
-                            <tr>
-                                <td>Current R</td>
-                                <td><input type="text" name="cir" value=%cir%></td>
-                            </tr>
-                            <tr>
-                                <td>Current S</td>
-                                <td><input type="text" name="cis" value=%cis%></td>
-                            </tr>
-                            <tr>
-                                <td>Current T</td>
-                                <td><input type="text" name="cit" value=%cit%></td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td><input class="button" vref type="submit" value="Submit" onclick="submitMessage()"></td>
-                            </tr>
-                        </form>
-                    </table>
+                    <div class="status__box">
+                        <table>
+                            <form action="/get">
+                                <tr>
+                                    <td>Temperature</td>
+                                    <td><input type="text" name="ctemp" value=%ctemp%></td>
+                                </tr>
+                                <tr>
+                                    <td>Humidity</td>
+                                    <td><input type="text" name="chumid" value=%chumid%></td>
+                                </tr>
+                                <tr>
+                                    <td>Voltage R</td>
+                                    <td><input type="text" name="cvr" value=%cvr%></td>
+                                </tr>
+                                <tr>
+                                    <td>Voltage S</td>
+                                    <td><input type="text" name="cvs" value=%cvs%></td>
+                                </tr>
+                                <tr>
+                                    <td>Voltage T</td>
+                                    <td><input type="text" name="cvt" value=%cvt%></td>
+                                </tr>
+                                <tr>
+                                    <td>Current R</td>
+                                    <td><input type="text" name="cir" value=%cir%></td>
+                                </tr>
+                                <tr>
+                                    <td>Current S</td>
+                                    <td><input type="text" name="cis" value=%cis%></td>
+                                </tr>
+                                <tr>
+                                    <td>Current T</td>
+                                    <td><input type="text" name="cit" value=%cit%></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td><input class="button" vref type="submit" value="Submit" onclick="submitMessage()"></td>
+                                </tr>
+                            </form>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

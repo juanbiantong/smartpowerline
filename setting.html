@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart Power Line</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Helvetica;
+            background: #f3f4fb;
+            font-size: 1.5em;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            margin: 10px auto;
+        }
+        
+        .header button {
+            padding: 5px;
+        }
+        
+        .link {
+            display: flex;
+            align-items: center;
+            background: #fff;
+            box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 30px;
+            padding: 10px 5px;
+            margin-bottom: 10px;
+        }
+        
+        .link .is-active {
+            color: #2a61d8;
+            background-color: #e7eef8;
+            border-radius: 30px;
+        }
+        
+        .link__name {
+            font-weight: 500;
+            font-size: 14px;
+            color: #484848;
+            text-decoration: none;
+            margin: 0 5px;
+            padding: 7px 25px;
+            background: #fff;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        .container {
+            display: flex;
+            margin: 10px;
+            width: 100vw;
+        }
+        
+        .logo {
+            display: flex;
+            background-color: #fff;
+            flex-direction: column;
+            height: 100vh;
+            width: 30vw;
+            padding-top: 10px;
+            border-radius: 30px;
+        }
+        
+        .logo img {
+            width: 220px;
+            margin: 0 auto;
+        }
+        
+        .logo__title {
+            font-weight: 600;
+            font-size: 24px;
+            color: #484848;
+        }
+        
+        .tabs {
+            display: flex;
+            flex-direction: column;
+            width: 70vw;
+            padding: 0 10px;
+            height: 100vh;
+        }
+        
+        .tabs__head {
+            display: flex;
+            flex-direction: column;
+            background: #fff;
+            padding: 10px 5px;
+            margin-bottom: 10px;
+        }
+        
+        .tabs__toggle {
+            margin: 5px;
+            padding: 7px 25px;
+            background: #fff;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        .tabs__toggle:hover {
+            background: #e7eef8;
+            border-radius: unset;
+        }
+        
+        .tabs__name {
+            font-weight: 500;
+            font-size: 14px;
+            color: #484848;
+        }
+        
+        .tabs__body {
+            background: #fff;
+            box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 25px;
+            padding: 30px;
+            position: relative;
+        }
+        
+        .tabs__title {
+            font-weight: 600;
+            font-size: 24px;
+            color: #484848;
+            margin-bottom: 20px;
+            background: #e7eef8;
+            padding: 15px 20px;
+        }
+        
+        .tabs__content {
+            display: none;
+        }
+        
+        .tabs__toggle.is-active {
+            background: #e7eef8;
+        }
+        
+        .tabs__toggle.is-active .tabs__name {
+            color: #2a61d8;
+        }
+        
+        .tabs__content.is-active {
+            display: block;
+        }
+        
+        .text {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 500px;
+        }
+        
+        .text:hover {
+            overflow: visible;
+        }
+        
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            border: 2px solid #f3f4fb;
+            font-size: 16px;
+        }
+        
+        td {
+            text-align: left;
+            padding: 6px 20px;
+        }
+        
+        th {
+            text-align: center;
+            padding: 8px;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        
+        td:nth-child(odd) {
+            max-width: 200px;
+            width: 200px;
+        }
+        
+        input {
+            font-size: 16px;
+            padding: 0.25em 0.5em;
+            background-color: #fff;
+            border: 2px solid #f2f2f2;
+            border-radius: 10px;
+            width: 100%;
+        }
+        
+        select {
+            font-size: 16px;
+            padding: 0.25em 0.5em;
+            background-color: #fff;
+            border: 2px solid #f2f2f2;
+            border-radius: 10px;
+            width: 100%;
+        }
+        
+        .button {
+            color: #fff;
+            width: 100px;
+            background-color: #5684c5;
+            border-radius: 30px;
+            border: unset;
+            box-shadow: 0px 4px 5px rgb(0 0 0 / 10%);
+            margin: 5px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAT8AAABhCAYAAACgVaaYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAFiUAABYlAUlSJPAAAC/uSURBVHhe7Z0HgFNV2obfJDc90wszDE1gQBBpLkoRGyhFsOGvWBERVMRdlZVVdBVQFBUXUVARVgGRJiAgFqQKCAhIE5QuDG2Ynkz6vUn+7zuJuu4izAwizMx5NExyW27uPec973fa1UUISCQSSTVDH/srkUgk1QopfhKJpFoixU8ikVRLpPhJJJJqiRQ/iURSLZHiJ5FIqiVS/CQSSbVEip9EIqmWSPGTSCTVEil+EomkWiLFTyKRVEuk+EkkkmqJFD+JRFItkeInkUiqJVL8JBJJtUSKn0QiqZZI8ZNIJNUSKX4SiaRaIqex/4MpdeaiJG8vCvNOwO9xQlPdCAY8MBqNsNiTEJeUhfpNL4fJHBfbQyKRnAuk+P0hBLDuqxn4YdPXOFGwH2ZDECa9AovVgnAkCEUHhMNhwBCGR41ANTpwSduuuKbL4Nj+Eonkz0aKX4WJ4PtNi7Fj8yK4cncgEvTBblLgi6iw6M0IaWHozSaotKVO00On08GgDyGs02iZioDbg9TsG3BH35HRw0kkkj8VKX4V4NDeTfhkxjPw5h1FUrIeQdUOPTk9Azk8jf9qBqiaCsWkg6KEYTKYwJc5TK5Pr6eLTiJoDJlxyHMQ7a+9E9d0HYbjR44iv6gQzZs3j32LRCI5m0jxKwd7ti3Gt0sn4fiJPCQkpKNp09ZIq9cUcckNoBjNMJosJHKAGvAj98hu7Nu2FPn7N8KRZCWBDMOv+kggyQVGDFD0RuhMYQRDCh56bok4fnajbGzZvAUOh0N8lkgkZ48qIX5BEpWi/IMwW9ORmJgsQsw/koJju7Bjy5fYtmMzmje7GG0u7QFHWpPY2lOTs3MVPpv3JkKlR2GyKQgjJAQwHNbTXzP83lLc/dQMJCZfgLvuukuc+7Rp02J7SySSs0WVEL+CwiN4e+i15MZSKMSMR2Z2KzS5pDMat7g6tkXFKDy6B+tWzkP2xR3QuHnH2NKKMfGFWxDx50NnVEQorFFozCFwMOBG2x5/R6t2t2H48OGYM2eO+HvLLbfE9pRIJGeDKiF+4VAQk4a2hymBwk6NXJWmg9cfBBQzbOQEM9IvRr1GLdDksuugN5QtpCwqPgiLYoctLi225Mz4addqfDLhUSQmJUEN+Sk8JvEjlxdS/bjwigG4umt/TJo0CYsWLUIoFMKnn34a21MikZwNqkQnZ73BhJBigzdshRcW6BU94uwG2KxhGN2HcfzHr7Bs7isY+dR1mDP5URw5sCe25++TnFTvDxM+Jqt+CxiMRoTCIdH4wa5PbyDhpv+4DyCjaZp4HwgExOfysG7ZFHw4/jEsmPZcbEn50FQNaz77AIs/eRlrl8+MLa2auF0lKMo7DndxPlxFeXAWnEAJvby03Osqgq+0BH53MYLeUqgeF1SfG6FggArZMCJUMEXCspq8KlBlGjymjB8AX86PMJgUGAx6cIeSMGtKyCr62vFbBTp4gh74gy4ougQkJmQgrU4LZLfqikbN2onjnE3efKaDOA+9MSzq/fR0nh53KbreMxrZF3XGSy+9hFWrVsHtdmPhwoVITk6O7lgG3h3WAYkWG/IKT6DXY+8hK6ttbM2pcZW4MG/q43AVbIdD50VIH4+cnBPoP/gd1GnaJbZV1WHVkklYO2cErImJ0BkMMFBBSX+ICIIBLpjEZmJdSAtBH+ZVISq0uOsSqHAyU2ShwqokwWxMpFKyBnrd/wZsFtlIVdmoMsPbUhJToVHm1eCHL+KBQuGvUaMVkVJSeB+0SAABRYViNSHekQaLzYBguBhHfvoaX854DONe6IFlH49E4bGfogc8C3BGMxpJgimDKboQglqEMlsIDkcdsd7pdP7i/vh9eTAazFANdDy9AlMkIbb01Kz64nVMGXU5KeAuJFvjYUAmnJ5SNOhwW5UUPkbxHEd8WhbslAYSHFYSvAgUhdeEYaE3Nrr2VoVeZMsdZiOlFRtsdiuJmxlxJgfMMMFuscJkVaHTkVMs2oVx/7wGe374UhxfUnmoMs5vy9qZWLtgNCVKO0KUkK06E7wh+mmanyRej4gagtXCXVFIIEIBSvBG+AM+GM1mmE0mEk03fB4vdHoTwjo74hIzUbtJJ7Ro0x2JabVj31JxwuEA3qZMYjNTiB5RYaLzi5gi8HrcGPjCRrHNPffcgxMnKPzyejFx4kQ0aVK2FmV2Le89fxXl7DBCFL726j8J6bUviq37LRE6j68/ew87v11IYbgHDrsCX0CHQpcfl7TvhSu7DIKJHGRVZc28Efjh+2VwGE0ocTvR+Y7nKU0k0XXRoIXcwuXxewOt5zDXTc6cW+B13EWJ/mrk+tSAB7u3rUGpMx9JCSqlMR1KnF48+OwnsMWnx75Jcr5TZcTvyKEt+OStfrDGkeuhRKpEdLCm1MLVtw5GacFRUW/jdbpFYg4GnHC5nBTKBKGSEHKCjgTd9NkDVS2FQdXB7w0jaPbCQ+KUkJSJxhd3RMu2dyA5pT45M0vsW8uOz12Ed567lkLZRPoezjBG6C1Bcp8KZZoVYpvOnTtTCGZAUVERpk6dWg7xC2Pi8M4wmSMoLfWg98NTkFrrf/c9vGcTPp/1HBAsQpIlAE/EAKdXRUpGK3T5v6FIz2wU2/LkqEEfhclH6BrmU0HhRyikwWSyUIHBosouNioQ8YnpsNoS6G+N2J6np9RVwC1XCAYDdH0CMHBnccUkxkDb7PGxrX5LSFXh97vEfdSRb9VTIWeyxAvnTIkgutF/sXzms9i9ayWSFTOKvD48/NLa2Jryc+DH9Zj3waNIshrJyetRr/WNuPKGJ2NrJec7VUb82P28/WQbGCnT6XQGaKoHDVr3xLW9noqtLz/CDXBJr/oQCHgp8we5wg7p6eV3glvXzsba+a/B7Iijq07HISeqURBV44JLcFPf10lkPWjVqhUaNGiA4uJifP755+Wo82Px6wTWZI/Li1sffB816kSdnxYsxcY187Fj3UdwlxxDisMBX0hB2OJAk9Y346IW1yAts4HY9mT43IVYv2w6fty6BCqFjEY66wgJi5HCQj3pSzCokmaFoCfR1uk5FCQZMtFWpO8GvRXW1Dpo3v4OtGh3Y+yIPxPBtyumYvv6j+lS+KD3noguDYeh0XXnlnCD3kxGjAoJgxUJ9ZqiUeMr4fcV46c9q6lAO06Xkb5bF6DvDNP2irhXgFW0lifVqE3OnQoscrMJKdFqBWbNJy/gh21LxHnSTUX/l9bH1lSMFYvfwe7VH8BitkGxZuLuv8+IrYlSnHeQXOJKFB75DrknDiDgKYGO6w/p+plIpDnz8amwywzR71bpt9rsDiQmJZN774hLO94EozUperAYRfkHsP+H1cg9tB1Hc36AzWqm6+Kj3x2miMYgfn/vgZORmJoV2+PU+H0u7NjwGbxUsBUUHKZ0kisadrgxTm/UQwto6HHXi6hR++LYHlWDKiR+wKzRN8HpLIFCCVELFKFJ+7vRsdug2Npzy7gXu8MWdCFMjoaHtxkUHU7k+vHw0MmIz2iKJV8txj+eehppaWnIzc3Ftm3bYnuWjUkkfjolRA7KiXsHf4xkCtU//vcw5Oz+Gg6zC3Z7KomKg6TLhqt6PICGLa6L7fn75B3egYmj+yIjiQTIaIDbG4JHMyEtJQvpaZmUWSl7kFsTKhgJC7HT1DAKig6RMzwBxeRDPPRw+ozIqt8Wt/R/LXZkYPaEIThxkM6NXFMoHAc3HctOmd5ui0fATxmPjseiGPSXwGIKwqZo8Hvo2hmoyDDryZmbUcL72BxwUIHi83nIzbtIrYOIIzGwmP0Ihjic13DXoAmo3aCV+N5v5o/G1o2z6fdYoY8E8ODwMxO/bZs/w/bFr1JGMkFJqIfej0yMrQE+nTkSh3YsphDbDROJWqlXg47CaTKp5Fh95PJtwt1yIcsTX3CholODiI+zIKh66QgaCkr1uO2hcbgg+zJxzKWLxmPNF+8gM5mcMR0rwC3RqoOOpaP9qRDSs/t3o9fA99GwaQexz6nYvnER5n80DLXiLQiEgnQuejoGu2Y+nwiMZgVOikTaXD8EV1x7f3SnKkKVEr8FU55E0YF1iFDoo5GT+Mu1j6D1FeW/Yb7SInJ5LhITazR4on+4kYJbAClPQq8YRYufPT5VbH86cvZtwqzx9yExIZkjOzouhWXkTg3mZPT7R7RbyVtvvYUZM2ZQGGkSdX4bNmwQy8vKlBe7QSNHGaIwvnaDdsg9fgia8xhscSb6PUE46XvrX9gZN947rMytXPMmPIBjB3Yi3q6Hi2Ss3ZV3o1mHm2FWTl8n6HbmYv7UxxAuIkdnUhDxh9Fn+DKxzksh7r9H3gSzjcWyBGn1uuLmvkMoA9vpUv/27LgP54Kpz6Lo6AZan0CushRFJYVo12kIWna4iZaZSHQ5zKUwmO6Rr/AIdm1Zjm+WvoOk5FQSFTdqZLZEt/vGiG2+mfcetm2ZiERLAo4HfBg84huxvKJ8Mf0ZnNj9FflNctP12uMOcvFM7k/fY/L4u5DmoDQSCZJDjScnegmyLmhO4pYkQnOua2XrF6HEpZHosdiEfAHs2r4Y+Sf2IIGEzK+FEKTQ/6GnF4jjTnv9dqhOF4mSj8Q/ES3b9qQ0Y486vjA77xCts6BFm/8T25+O94ffQlpcROnaiKJwAA0adkJSag3hQoUj5b8kwm2vewRWizW2V9WgSonfigVjcGjLJxQ62BD0FKH9DU+jVfubY2vLzqfTXsC2tdPIlThEjuLEqdfpReKMkIhYLWb4VBWPvrIKivH0QvDVJ+Ow+9sPYeYGFy1CJbaBSuwSXH//BNRrdKlohKlXr56o4wtSaH3xxRdj7Nixsb3LxvsjupKjUKEYFMowfvYQsBvMKCUn1qx1D3To8bfYlmXnjaevRpzZQAVJCa64cziatLw+tqbsjP97B9iTrHC7SnHH32chJa0etn37JdYsGg4LXceUmvUo7J8c2/r3eeeZtnAk1IDXXYR2XftTKH1vbM3J2bp6Br75YjzMVrJZhlQ8MHSuWL567jvYvvl9cqV6mHTJqEmCZNSnUeYPQTMq5HroZaB7TffERPdLifaDIXHiVngra5Vo8Di8fyuc+TkIBd1w2MIo9ejQb+hsOGJ9Q79e+Db275qMcMCKuKyGuP3+f4vlZUUj0Z849EoY7QqKCz3o8/R8pGfUwaRn21LkYEaQ5PbhEWfewvzW0Ktht5JbdHlxx2MfID3r5A1lVZEq09WFSUypJRItFVtkrIyIT8qIrSkfFkr0WYkJSExyICHFRg6Pwqg4I2U+C+KSLPRegSORW22DsT1OzZ6tS+mYVGpSSapQBmMFDYZ1QviY2bNnU8hn/6WLS9euJGTlhOsjtZBGmZhCFSUMM0VXaiCArNp1KyR8jJFEQKFz0nHjg7Fi/dhM5EL4noifzSUHwS3fHL7q2U6XofBgLKY4sX9I88GRdvqGFLstSQgWO0mVW/xjcF0iF2JWK3m1sAE//bAYe7bPwt6dc3Bw82wc2DQd+zdMx08bp+OHryeJ144VE7F9xQR8t3gcdq6YhN3rZ8JfRI7Y5ESchX2RAck16/8ifEyYzjMc9lFIGkC9JuUfGqmQozXb4ihNGGDWc+fqaMd3E4WhJhO5PEOArkWpWHYmRDi8pXQZ1ILkHqtuK//JqFLil5xeF37K8EYjl9qUaKz22JryoafUoIZ0VLpaEOAKdArHNL0dgQi9p9JfpZJX05EolOHyrVg0AfrAMcoNtDUJsqjLokzZ4OIesS2AYcOGiYYOrvfhFstu3brF1pQdDlHYpXA3GrfHCJdHL+qE8o7+hJGD2mHdsg9jW5YdfZhDMTp1rqPk+boqgHBOfBAK83U8rIUIaV5aFhbDELXwr8J0SsJmunYhyvgUQuu45/FpiJjoWhrF9VQoPfyMTm+gMJmHQCowWo10n+PhDobEK6hxA04EPr+GgDcEv0dD0E9SqZFLNFhh5j6aJHUquf5wiH4LpZOQXiXnSMtDntg3ROHeBiH+Dr0JRl3FwkWNwt6QSseic/YHo8cPO+pQOuG+iBpefvYGLJ4zCts3TMGubbNIxD/D/h9XYv8PK3Bo9zrk7FmHg3vWo+D4TgQCJWL//8ZsqSn6m6bEJ2Ly2EHYuPoj5OwmV5t3VDQqeYvz4C2il/MEPK6j5LyPwe8rFMJe2alSYW/RiUOYMqoXktLi4PG6ccvAycisWX4bv3TOy9i9eQ7MZp4hRnTxF3V90VzMAgX4KQMMeH7paUvLiSNugiGcR9rHszqT0SEhCZDjuOeJ6eQoM7B371706NFDhL1MixYt8Oqrr4r35WHcPy6HNc5MidyNDl0HUiL1YNUXU5CebgPlceQW+pCQeiGtuw+Nml0V2+vUvDv0cljscQgEC9Dlrn+RUy2/g5n0TFcodg2l5GjvHjIfSSlZ2LxmBjYtHwubKQGW9HTcev/phfnDF3tB1bkQ9HnQpe9ruKDBqSvz93y3EsvmDaPz15OIWND/qc/F8rULJ2LnlvdhUhJI1HW4oseTCIn7SveYBDpCN5qzBEk1L6F7zaJP71msRWEQgbe0BIU5e5Fz6Adyl8cQZ4pHkSsPvR6cipp1m4rv+WbBeOzY9hHCJKLtewxCi8vvEcvLw79fuRa6oA6+Eid6Pvoe6tRrgZ1bP8dn748EBSbQmezQUQiuUojMgqxTTAio0cYi7o6lULkTpt8UIqEOaQHUbXgp6l7UDpd15PrAaD3pjvV0vLkvICPOBrpMKCwsokthFS29/Mv5N3M1QEi1xRrqIvR9QJzNiswLLkbNhm3R5vJbaUvRU7xSUbWcX2ot+kVxUOmGkU2Dw1Ex54cwxYxUamsRKvkplNTCnKBUCisDog2MuxTo6XM4dOrSb9vGLxFw50Mj1xCm0MVAAup35+FCSiwsfMzjjz+GrKxa5KwMlPAKhRBWBB07M/pfo5RZq2FrtOsyEINHr4QluRlOFBYgwW6ijHIES2YPxZhhNyA/72Bsz99Ho0zEHR40dqyhaN1XeQlQRuGGCO4LaOLxYYSOMmsoSO6Pwl+NMndZ8FFYb6TfyA7XiNOHZ0FylBHy7gpddxOFjj9T4i+h+0fBXsRPLl4hB34NGl3ciV6d0bjZ1biQ3jdp3hmNmndCY/qb3awTvXibzriwRXc0aXE9Lrn8Llx35zA88PRsxFtSoAY02OOMWL3sndi30PebVOiDegQVlULVslWP/DdGKmUjJDxhQ0hUQTAXteyOQSMXwGCthYKCQjhVNxV4Gok0jxyKUIhMbo4vKTnFCF2zCIXGisGHOCs51sIfsWXpWLwx/C5xLKZZ2+7o/fA4FKkRFJT4EPAHoQuX0r3yk2P1UcEZgtmgkut10jIPpWEPvQ8gQk6yIGcdvv3qdbw8pDN4zHplo0qJHykIuZsscmkkTpRYdLpoZisv3GnWyKmIy3lKUFyqqppG72kJ/cPhm8lkprW/z77tq7Bi4RjEx9EHsSNlQB2VzrbauKrzQLHNc889i2PHj8Jut1ECDqBjx4644oorxLrywv3WuFFGUUi0uWgmFMWKOx56C7c+PBtNLu+DQrdX1B8lmVz46M1bMGv8ACxf+C+x7ckIiNbDIESEQw6iIih8CygE5HCTZFQs49ZZ7pQcCevIXVNBUwaiITOJFglX2TIaXXNKB1R2CbH7GW4Q4rThD1A8SSJ8piQ3uIIE3gWjGk9682uBopHTspBwWOi/MMo23PC/CVMBTmcqusZEdL86K1tcKvoNnYX7h8zC3X/9GHc8MQO9Bk3F/w36ELf9bTpuf4xej8+k9x/h9kHT0feJj/GXax6D00PCRmlC7zmMLWtmxY4G1K1/CR555hPcOWgK7n5iFm7/2yw61kzcOmgGvWai18CZuP2vs3DbX2fQaybuGDAJra96GD6fDRZLHFLi9NhUgWqVc03VEj8ivVY2ZRCN2zxIoCpWSR8hx6dxZQtl0WhnW714cf0Ri1+IhJDF0Mh9tn6Hz2a9BoeJ3I2BXQYdi/bz+EPodkd01hXuiDpj5nTUItfHx+WGjlGjRol1FYG7yLDwcSuvMTpY9Rey6jZB26v74a/PL0ZSRnN4fBocRh3Ukn34/ps5+GDszdj9w/LY1r+imO30W8Pknuh4Za2b+w+40AhBFa7WQGEYDz1keAihjgRQDXKIWTbHYCDx5MYiPTtcLkxOAzdysF5zV5j/3Fp0XKfzilBB8R+GsMJ4/L6ooNJp0RFjS+n+Uvqgb6MIQYHqL9847Z8x6Oj6qHQcSkO6k4SVNbIa0qsRatS6EJl1mqJG7QvpfWNk1G6CmvQ5gz5n1r4IcSn18Jer74GBCmwuEGzk3Pzu47GjRDFZElCjZjallWa0Hx2Ljsl/07Oa0Psm9JePHX2fVq8VLuv6AAlfAp0V/WpKG2qsk3plosqJXxqJX4TEj6eJ5w6kFYEFj/tL/ZzJhHGjf9hdCfGj1891Qydj+6qZsOpclMEVeFQjZThyjv4ALmp/O+o2vlxsM+jRgcjIyKRMEhL9+tq3b08uqGJOlVGDFIrQ+RhY+CInv61GKqV7PfQeHnxuOSL2juQEdUggQYqUFmDlnBEY/+z1+HHjx7GtgaTkuhQCGWF1mLFs7kvYumE6HZs7356eI3s3YfJrt8ARx+dDCyImmOn7mTA3L9KLRzmIDpRlgPux+eka/kbJTgG3s9DJ073kPpUcB0bha8Rfz41P0fEVFWfz+ik4uOMTEoBEBPR5yG7y6ygWmzUFTl8QepOCbWtnk7MvnwAe2LESPhJNDvGDmorEpDOfXk3jn8uumfKFP3zmWd9KoT6na0PIiGAFG8TOJVWqwYPZ+d1SrFn4FCJBM/qPXClCrPLy1ewX8NO2hYgY7ZRWog0cfG+5D56OQiYKqCkDB/HQsOXQK9EM/TMlRcfw9tBbUDPTAR8PV6Lv5x7+eXkeDB65GEZ7Jr5euRQDHn4EdWrVEu4xJ+cw5s+fj4YNG8aOUn7+PaKLaNX0el34v4ETkZp5+qFIuzcvxIYl0xHwFtB5hMlguJBbrKH2RVfjljufg9+Tj/dHP0riF4SJK/xJSHxeHezWRBhs9LtZRDicJZfN+mIyGyjD+pFfcBQKCX5CnJ8Ez4y8E0E0aXkNutwZfVLdtlXz8O3iV8U0UNas2uh1/wdi+amY/Mqd9HV58LnduP6+cajd4C+xNSdnx5YFWDn/ZXLfSWD96zPkC7F88ezR+Gn7LJjjUkgYQ3BkXE5RAsX1JJRmk00UcDyJgUICIVrmgz4YyVVzlx2NXHCIIgLN68Px/dupoMlDvFWPoC8Z+YE9ePTZzeSgotFGbs4WvDf6DqQlJMKuWFCos6Jps6txQaNL6VgUelI64iFk4vrxtaWLyKG9p7QUW9bPQ2HuHiTqA+RSSaxTkvDA49HJbQuLcuAqPiJakDnr8r7cKMP7RgtnLryjD9Bix80i73YV4IctX+LIrrWwm3UoKCpEj/teRZMWXeH3OuGiNEtuQexr5Ooc4Vq5dwIvi0Y/ZGFFwWMgl8v1gjkHv8c3C15DaoINfmcI9Tvfhis7PSjOsbJQ5cTP7SrGhFHX8ZSmYtA6BayxNWVn+XwSv80rENRTIuCbT3ed2/7Es3djoS8PI+r/9OfQm39bnzN6aE/EmYooL5lESatXwnB5inHbgDdQr+E1YpsWrVsjNTVFhKoF+fkY/PgT6N27t1hXUd54rhsSHSEUOfNx799mITX91JMU/CeH9m3A9AnPIcHsgdlqhLe0GClZF+HOR/lZIho+fPdxnNi/FVajBrPNSAWAATq/GxbKKIEANwSFYTGbSOwpo4Z1JAp0tSjDBChSDqp63HDvC2jY7Ne6zE0rpmPjsjEwUyhszWyBOwaMi635fUY/3Q017C64gyp63j8BtSj0OhXbNs3E6s/ehIMndST3dd8z0dEln88ahcM7ZsPuSEAwwA0uXMFPQgee6cckhIOrIQxiPjQdiZ9KwhL9qxi4oSVCTixE23IXGgppSTeDZgd6PzwayWnRlt6fKcrbgw/f+Bvs+mL6RCJF1yVMYayBBIknhQjT9dJIALl/J0cSRh45xJND0PfrKdTVQgYY4muh72By3DHefvF6hAL7YFaThcBxFY9KIslVE1yQamKaNIoAqNDl9MpttmG9CpuN8oGmgy9kgiO1IR54Yqo43ph/XA+brgAaOesgnZvNakWYfh/Xm1PqFfdT1LfqyMXSdeD65IhmgMmqwWLlngAlcJXE4ZFR82G1JIpjVhaqnPgx77x4HcJuJwa+vE6U4uVlxcKXcGjLMsoOVDLTf5xwQ5TQxGB4soB8yShJoe+QBTDZfg1Hvl78Ln6kjG20GqBxSRzxQyFhSLnoetx427Nim6HPPIMVX6+Aw+6gBE6lPq1fsnixWHcmHNj9DY4f20WJXkHbK/vElpaPjetmwussIPfoxgXZbUTL588U5B1B/tEfyHkcpPCTBKP0mHAEnIG5pVEUDJSB6AoB5ngo1mSkJqeiTnZHOOJ/mymczhNYvvAVqIEQml96Oy5s3j625vdZ98UkuI58B80Uj2tu+yesPPrmFDgLDuKrma8i7C+AvUYj9LjnRbH84O4NWDDjWXJjJhjp+qv8OFEKLtWwl24t/Q7KDVzQKUbxS0hMuE6SBI/Ez2SMTppgtpiQlJCGlJrZsNesj9ZtuavHyQn4POK6Bk/k4MihbeTa8mFRyLXR9fJRwcLOysRiF4oIEfSTAzUa7KhZsy6SLrwE7a+4L3akKB+83Juc+mHa3kznzh2fOYxnsSKp4qiE60bpd/EMO2KGHFrB1S/cwJRZPxspF1yKq7sMiB6MeHNoF1jhhJ9HHtGVMFEhxq38XDUgZqym/MNp1KLjhj52xSSAdGwtQMd12FC32SVo06Ev0jKyY0esPFRJ8Zs69i64jx/AwFE8XVE0EZeHJXOH4ycSv4iRsgWXxpTgNS3aMsgJwECZXFP9JH4LYbZH52/bsHoWFn30PBrWSCHR1ItuFBTx4fihUjw57hsoMGPuvHn4+5N/R6PGjUWL5bGjxzDqpZdxQ8+e4hiSqk844oXHVUoCaoc/6BVhK1d7iunxab3VbqV08/uz+YRCQeTn7SehJCHWSD65FwK5PzGjDaUpjkhYULVQVKjIPyIhOQtJybWFMP43LucxSqNbRMdurs5hgnQcOorYP6T5yRFSCE0hP8MONblGJhIT64pGlspMlRS/RR8+heO716P/iytjS8rH0k9GYN/GJdBbFOGk2PXxAG9G1INQGgkGPOhHzs+WUAs5uzbjk8mPwEEhrpfcg5FKS94u31OCAU8spFKxLnbu2IY+9/eHxUaJm8LF/IJ8PPH44+hzz6nHqEokkrPDmTf5nEO45DsZcekNSXzK/xCgn1GD3B0iQCVqhEIzKp2pZI3GAVxa0IvCAV1YL/pb5ezfgg/H9obDysPhKCSi4MFiUFFc7EHfQVOE8O3a9SOuvOpKMRW6iUrf/Lw8tGreQgqfRHIOqbTiV3B8D1nw2If/Ip5sfqm7Yn2rmKgZjrbAibos0j0d13nQX/7Mqyn6RdGxtZj5/hCkZySKUQw81ZXREEJeiR+33D8MNeu0FMd78KEBaNL0IjFhAocSjRs1wuTJp5/JRCKRnD0qpfhxZbHXeRyK8eQDxmtk1IfJVrEOzoyJx0WadOCnwHGLLP/lzrgc+rIw8stosOCjd4fAimK6iCY6KQqRyffluX1ofNmtyG4eHabWvXtnMXqDW9F4hhSeov6jjz4S6yQSybmjUorflo1fICn996deT0uvHe3QWUHE7CthlUQu1pGZBY+cYISHwNN7UZGsY8kzw6KPF6NJuE8VDwpJv6ANbuwdbdmdMmUq9h3YJ6ZPYtu4c8cOvPvuu6JVTyKRnFsqnfjl5x/Hd5smIy65VmzJ/2I025CQlBL7VAHCLHaq6NbA/bDEbLY84oNePG07O88Q/IgYNDFhgRrxiRY8brHr+8gEcYjXXx+DsS+PRGbtWhQ185T1JzB9+gxcdll0OnKJRHJuqXTit27RWDRqePpnE1ji68belZ9wmMNcHnrFHTwVEkIDCRsP0zJCz4+cFF2/yAnq+WHoBthIHPO8RgwYEe2Ff+jQQUx4523UqF2b9JKOo9eRIJvQocPpz1sikfw5VCrx40g2Z8+36HBNv+iCU3BB9qmHP50KCmyFwPH3cX1d9DJxay93ItVBzxOlhcwwqg74tTwcLQGeG/M59KZErFmzGt26dUVGViZKfX7oeJwt7VrqdmPp0qV8eIlEch5QqcRv+ph+aHlFNyjGuNiS36f5X26IvSs/PPQo2rLL069HRy+Eue6P4FmNwT3oKfD1BUrhyGqPZ8dtg8mchA8+mIz7+/UVQ9e48yl3kOawmWeXzszMwJNDnkRp6ZlPPS6RSM6cSiN++7auxsHty1CrUdnmu7M4zuDJ+aRz7O64ESM6rpH+5+Fq/KLoN6AGxTjWUHwG7h0YreMb+9Y4vDTyFdSsmYkgrecpmHgkCDeW8PRGPEyKn9Px4IOVa/C3RFJVqTTit3PLF0hNToHNfgYNGWWFbB8/N4En2uRB/AzP58eDx7mpQ1N9yKrdHI/9M/r0rA+nTcaE995Bzbq1KMzVwWq2iimYxPx6dCyeZor7SMfHx2Hb1m04cOCA2E8ikZw7Ko34FedsgmqNICGxZmzJ2cNI4uWncJUfNGTkBw+FeSaO6AwZIZ8HhpRm6P3Ie2LbqdOmYsSIF1CbHF9Y9UDlhhCebl2vI7cXAM/OwQLI4yb5EZipGSmYM+/XOfMkEsm5oVKI396dq8WEjvwcCR4QfrYpPLyV3Bo/cpFMoBKChcQQqhn57iNIrn81/jYkOh3QkKeHYNQrL6NB/fo4npuLhPjo9FZiVmUDX1ru5KKH0WQUdYdeLz+lX8HkqVOw9ps1YluJRHJuqBTit3X9PET0YRK+io/aKCuTXrkTuQe/p/DVAB25Pij88ok5+Rpe1At3PfCm2G78+LexbNkS1KpVG7m5J9Cta1csWvQFAgG/EM3ojMrR0SA8NVBIDIuLkBsMIjMjE/96Y4w4jkQiOTdUAvGL4Mi+jWKW4Oj8ZWeHrz+filFDukH1HYXNYQE/Z5cfuePxa8gp9OCy7v3Q+/5XxLa33tob7773HhISEkj4jmPY8OF45ZXRYl3/fv2RczhHtBSLhhJygDxVPT/PQjxUnBfT8gP792HX7l1iH4lE8udz3ovf8cO7oISDPM0A/Ko7tvSPw+MtwdL5r2Hr8vFIsXv5WxDQGWDR6xFWvSguKEGn7o+hw7WPwu0tRf8+9+Lw4X2IT7bD6XThpZEv4aYbb44dDRjQ/0FkZWWJkSDcWhwJRZ8kJwbI0Xtu9fX7/IiPj8fQp/8R20sikfzZnPfit3fbF+DJmEOqHiZDBCVFv33qVEXJz91PIe7dmDi8M3ZsmAZTogkhnQJDxEHfo0Outwgp2VfiufE70KFTP4wdOxb1L2iI7T/uhDXeAY/bi3Wr16NH9/+diHT5V8tRXMSzylDoTEIqJkrQ8wQJRvGZn1wW1is4fCwXPW+QE5lKJOeC8178Thw7BIPCT+CKwII4HMn5JramYgT9Hsz/cDCmjL0TAddBJDrSEGdJglk1w8jPTEAILn8Q1985Arf2i4aygx55DOPGjUOj7EbiXChqFeGrePM79OvXD0ePHhXdXbiTtJhinCc5JUdpMhlF15nExETsP7AfP8muLxLJn855P5PzpJG9yPXlkdjoKfxVEHToMPAfFRsmtmzuG9j6zVewWpww6sPChYVCRhhNPOW3Cm8wCL9mxL2D3kVa7WY4fPwYbr7pJujDEcRRmMoTHXC3Px2Jl8tVipVLlsNm44fanJy+fftiz549MFkt4jPX+7EIWswWElEDCXFAjCbxedz49ttNYhuJRPLncP43eKheMbKC8Sv0T6kb09787UNdTkXBsR34ZOJQvPNsT+zdNBNJNicU8SBrO4W5ZkSMEdE3ryAAJNTtgMGvrBHCN/H9qejevRv0igZHgk04OJ6aykDuTQ0Ef+nAfCo++OADeD0e0eFF1P9ROcP9/fg/bgHmUkcc12ZF3/sr9tAhiURSMc575/fu850oVAwLsfDqyYFpOnJnLqTUa4NLOtyGug0upTCSnBUJkRb0kNi4UVJ4DId++g5bti6GVnoM8Qo/cs8PvSWB3JcCQygYrXfTafCq/GBpBzr3fALN/9Idfr+KQY8NwIpVy1A/syG8AU08e9Zo0CHEgsXP8lD0cJEIL/3iK9Hieyp27tiJPv36IjEhkcQvLJ4Byw5S1TQx7M1Mn43kBo8eO4YXRryIG2/89cHXEonk7HHei9/09+6F68ghIVYsgtxdhMfN8mSjHmcpgrokCiut4CesmeCFYuSHS7vIYYXJbZkAix6RoKilE8/iUGCDUTFDC5TCQ4KY3bYnbrjtefFd32//Hvf0uRf2+DgSJJ7KisWOH2ZtFi6P25zpBIRzCwQDWLl0uXjU3+mYOHEiRr82GnXr1xOzOfNMMX6fj0TVIuoA+QaYFCN2fv895s6dizZt2kR3lEgkZ43zXvzWL5+M7UvHImyJJ0Hj59xqJBjc54+fSG+FzuCDz++F2WyGntwZN4yEVQNPvyKEJhIwQIMPJgMJTYRcm9GFIrcBNRtchqu7DUBm7YtR6vLi2X8OxZIlXyGrdi0xEwuLEs/Mwn/5+bT84KIg/RNRNSGKPOHp8iXLyiR+zGuvvYaP585BWnq6eFg2Pw6QXR87QHa1PFW+1WyBj0Rx1qxZSE1Nje0pkUjOBud9nd+FLa7FsaIAq7QQCi0UfaiQeHo8P0uXhM6mxEEJkztTrQj5uYMydyeJjqc1GNz00Qe/rgS5rgAM9va4a+B7uHPAW4hLbYJX/vU6GjSshw0b1gsB5SFq6SRQajAo6uhE3zwSvCB9Fs9GJeETU1WRAyxxlkRPsgw8+eST6NOnDw4fPixGf/AQOJ438OcHJPGUWR63W4TEHTt2RH5+fmxPiURyNjjvxS8xJQu3PjQG3hIvTDoDjEYKR4UQkjszkBOkcJiDWTWiRyigipZZnpHFQOKnqj54yflBqYM2Vw3E0DdWoc8Tb8EdSsJ9/fqj4+Xt8OXni5CelQG73YG3334bcz7+GE0vbAKP1/uL6xPdVPg9HZe/mxspRANG7BzLyiMPD8T0D6fhwP4DsUlSI+KJbhzGi4ehc1MyHZTF99prr8XIkSOjO0okkj+c87+1l2jWsgvqt7gGuUWF5Lj8JG4qrCYdTHqNTJOHhMNDwuRDRCmFXy2Cs7QY3qAOSVnN0LHLwxj0z3m47Kq+8HpVvDlhPLp174I9e7ZC0QWh0/T46yNPiFmW27VrJ76PXV5cnEOEujw8TTzTg0SP3adiUNiocftKrLNf+WjWrBneGDMGucdzxWQHLKQ8zX1ICyNA32sgceeDp6alYdpH0zCeBFkikfzxnPd1fv+J11uAFfPewsHd2+H25AnnpfJzhUgs2EElptVFo0aXIPuitsis3zq6E5GTcxhvvDEGa9euFZ2LnS4XWre+BE899Q80bdo0ttWvDB48GIsWLYLdFu3i4vP7Rf0f78tuk/v2lZSUYNWqVcKlVQQObztd0wkevxeJqSnw03eQ/xO/hdex0+TQuLioWEyO+t2GjVGhlEgkfwiVSvx+gU658MQ++HzcumumUNiE5JR06JRfZ33hX7WABGz5kq+EkGVkZCApKQmtWrUSdW/Z2dmxLf+Xffv2IS+PO1ZHL41o6WVXRsLHf1lonU4nrrvuujMWpKeGPo0Fn35KIpoGE/0Obshh0eO6xnAkWt/IDSwBnx8jX3xRhMMSieTMqZzi9zscPHwImzdvwdy58+nvBqjwo0ZCTXTqdA169OiBSy+9NLbl+cXKVV9j+PDhyMvPR83MTBJzo3C17Aa5QYRvEXeFKS4qQsuWLTFq1CikUVgskUgqTqUUP3ZfmzdvRs6hg8grKMahwzk4cuQYIuEg0mqkon79Bshu2BDNKKStV7d+bK/zn9defx0LP10Ij8eDlJRUujvkYEn82A1yI45CzpPDbXabvXv3Rs+ePVGvXr3Y3hKJpDxUKedXVXhu2DBMnz4ddrtNhMD8slqsIpZn4efPbA0LiwrR8pLWGPLkk2jS+MLY3hKJpCxI8TtP4Udc7ty5U7QsH8rJESM/uI8g3y5uDGEXSP/A5fWgxOnExY0ao0Z6DREm8wiR7t27o06dOtGDSSSS/0GKXyWisLAQe/fupRD/iAh/eYhdqdsjnhGip7vILc/cKMPO8LLLLhOTqkokkpMjxU8ikVRLKkUnZ4lEIvmjkeInkUiqJVL8JBJJtUSKn0QiqZZI8ZNIJNUSKX4SiaRaIsVPIpFUS6T4SSSSaokUP4lEUi2R4ieRSKolUvwkEkm1RIqfRCKplkjxk0gk1RIpfhKJpFoixU8ikVRLpPhJJJJqCPD/lJTJBMXZC0AAAAAASUVORK5CYII="
+            />
+            <div class="header">
+                <h2 class="logo__title">Smart Power Line</h2>
+                <div class="link">
+                    <a href="file:///Users/user/Work/SmartPowerLine/index.html" class="link__name">Home</a>
+                    <a href="#" class="link__name is-active">Setting</a>
+                </div>
+            </div>
+            <div class="tabs__head">
+                <div class="tabs__toggle is-active">
+                    <span class="tabs__name">NETWORK</span>
+                </div>
+                <div class="tabs__toggle">
+                    <span class="tabs__name">CONNECTION</span>
+                </div>
+                <div class="tabs__toggle">
+                    <span class="tabs__name">DEVICE</span>
+                </div>
+                <div class="tabs__toggle">
+                    <span class="tabs__name">SENSOR</span>
+                </div>
+            </div>
+        </div>
+        <div class="tabs">
+            <div class="tabs__body">
+                <div class="tabs__content is-active">
+                    <h2 class="tabs__title">NETWORK</h2>
+                    <table>
+                        <form action="/get">
+                            <tr>
+                                <td>Station SSID</td>
+                                <td><input type="text" name="sta_ssid" value=%sta_ssid%></td>
+                            </tr>
+                            <tr>
+                                <td>Station PASS</td>
+                                <td><input type="text" name="sta_pass" value=%sta_pass%></td>
+                            </tr>
+                            <tr>
+                                <td>AP SSID </td>
+                                <td><input type="text" name="ap_ssid" value=%ap_ssid%></td>
+                            </tr>
+                            <tr>
+                                <td>AP PASS</td>
+                                <td><input type="text" name="ap_pass" value=%ap_pass%></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td><input class="button" type="submit" value="Submit" onclick="submitMessage()"></td>
+                            </tr>
+                        </form>
+                        </tr>
+                    </table>
+
+                </div>
+                <div class="tabs__content">
+                    <h2 class="tabs__title">CONNECTION</h2>
+                    <table>
+                        <form action="/get">
+                            <tr>
+                                <td>IP Address</td>
+                                <td><input type="text" name="ip_ipaddr" value=%ip_ipaddr%></td>
+                            </tr>
+                            <tr>
+                                <td>Subnet Mask</td>
+                                <td><input type="text" name="ip_subnet" value=%ip_subnet%></td>
+                            </tr>
+                            <tr>
+                                <td>Default Gateway </td>
+                                <td><input type="text" name="ip_gate" value=%ip_gate%></td>
+                            </tr>
+                            <tr>
+                                <td>DNS Server</td>
+                                <td><input type="text" name="ip_dns" value=%ip_dns%></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td><input class="button" type="submit" value="Submit" onclick="submitMessage()"></td>
+                            </tr>
+                        </form>
+                        </tr>
+                    </table>
+                </div>
+                <div class="tabs__content">
+                    <h2 class="tabs__title">DEVICE</h2>
+                    <table>
+                        <form action="/get">
+                            <tr>
+                                <td>ID Product</td>
+                                <td><input type="text" name="id_pro" value=%id_pro%></td>
+                            </tr>
+                            <tr>
+                                <td>Category</td>
+                                <td><input type="text" name="category" value="Smart Power Line" disabled></td>
+                            </tr>
+                            <tr>
+                                <td>Target Server</td>
+                                <td><input type="text" name="server" value=%server%></td>
+                            </tr>
+                            <tr>
+                                <td>API Key</td>
+                                <td><input type="text" name="api_key" value=%api_key%></td>
+                            </tr>
+                            <tr>
+                                <td>Satwil</td>
+                                <td><input type="text" name="satwil" value=%satwil%></td>
+                            </tr>
+                            <tr>
+                                <td>Level</td>
+                                <td>
+                                    <select name="level">
+                                        <option value="polda">polda</option>
+                                        <option value="polres">polres</option>
+                                        <option value="mabes">mabes</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Site</td>
+                                <td>
+                                    <select name="site">
+                                        <option value="rbs">rbs</option>
+                                        <option value="mso">mso</option>
+                                        <option value="cc">cc</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Longitude</td>
+                                <td><input type="text" name="lng" value=%lng%></td>
+                            </tr>
+                            <tr>
+                                <td>Altitude</td>
+                                <td><input type="text" name="alt" value=%alt%></td>
+                            </tr>
+                            <tr>
+                                <td>Time Update</td>
+                                <td><input type="text" name="interval_update" value=%interval_update%></td>
+                            </tr>
+                            <tr>
+                                <td>Time Upload</td>
+                                <td><input type="text" name="interval_upload" value=%interval_upload%></td>
+                            </tr>
+
+                            <tr>
+                                <td></td>
+                                <td><input class="button" type="submit" value="Submit" onclick="submitMessage()"></td>
+                            </tr>
+                        </form>
+                    </table>
+                </div>
+                <div class="tabs__content">
+                    <h2 class="tabs__title">SENSOR CALIBRATION</h2>
+                    <table>
+                        <form action="/get">
+                            <tr>
+                                <td>Temperature</td>
+                                <td><input type="text" name="ctemp" value=%ctemp%></td>
+                            </tr>
+                            <tr>
+                                <td>Humidity</td>
+                                <td><input type="text" name="chumid" value=%chumid%></td>
+                            </tr>
+                            <tr>
+                                <td>Voltage R</td>
+                                <td><input type="text" name="cvr" value=%cvr%></td>
+                            </tr>
+                            <tr>
+                                <td>Voltage S</td>
+                                <td><input type="text" name="cvs" value=%cvs%></td>
+                            </tr>
+                            <tr>
+                                <td>Voltage T</td>
+                                <td><input type="text" name="cvt" value=%cvt%></td>
+                            </tr>
+                            <tr>
+                                <td>Current R</td>
+                                <td><input type="text" name="cir" value=%cir%></td>
+                            </tr>
+                            <tr>
+                                <td>Current S</td>
+                                <td><input type="text" name="cis" value=%cis%></td>
+                            </tr>
+                            <tr>
+                                <td>Current T</td>
+                                <td><input type="text" name="cit" value=%cit%></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td><input class="button" vref type="submit" value="Submit" onclick="submitMessage()"></td>
+                            </tr>
+                        </form>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let tabs = document.querySelectorAll(".tabs__toggle"),
+            contents = document.querySelectorAll(".tabs__content");
+
+        tabs.forEach((tab, index) => {
+            tab.addEventListener("click", () => {
+                contents.forEach((content) => {
+                    content.classList.remove("is-active");
+                });
+                tabs.forEach((tab) => {
+                    tab.classList.remove("is-active");
+                });
+                contents[index].classList.add("is-active");
+                tabs[index].classList.add("is-active");
+            });
+        });
+    </script>
+</body>
+
+</html>

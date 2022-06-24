@@ -1,0 +1,547 @@
+const char home_html[] PROGMEM = R"rawliteral(
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <!--for encoding type di htlm page-->
+    <meta name="description" content="Smart Power Line Interface">
+    <meta name="keywords" content="Samrt Power Line">
+    <meta name="author" content="Synapsis.id">
+    <title>Smart Power Line</title>
+    <style>
+        /* html { font-family: Helvetica; display: inline-block; margin: 0px auto; text-align: center;} */
+        /* .meantittle{font-family: Helvetica; display: inline-block; margin: 0px auto; text-align: center;}
+        .teksbold{font-family: Helvetica;margin: 0px auto; text-align: center;font-size: 40px;} */
+        
+        .text {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 500px;
+        }
+        
+        .text:hover {
+            overflow: visible;
+        }
+        
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        
+        td {
+            text-align: left;
+            padding: 8px;
+        }
+        
+        th {
+            text-align: center;
+            padding: 8px;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f2f2f2
+        }
+        
+        th {
+            background-color: #04AA6D;
+            color: white;
+        }
+        
+        a:link,
+        a:visited {
+            background-color: #f44336;
+            color: white;
+            padding: 14px 25px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        a:hover,
+        a:active {
+            background-color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="teksbold">
+        <table>
+            <tr>
+                <th colspan="2">
+                    <h1 style="text-align:center;">Smart Power Line</h1>
+                </th>
+                <tr>
+                    <td style="text-align:right;"><a href="/"><b>Refresh</b></a></td>
+                    <td style="text-align:left;"><a href="/setting"><b>Setting</b></a></td>
+                </tr>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <th colspan="2"><b>NETWORK</b></th>
+            </tr>
+            <tr>
+                <td>Mode</td>
+                <td name="dev_mode">%dev_mode%</td>
+            </tr>
+            <tr>
+                <td>Mac Address</td>
+                <td name="mac">%mac%</td>
+                <tr>
+                    <td>Station SSID</td>
+                    <td name="sta_ssid">%sta_ssid%</td>
+                </tr>
+                <tr>
+                    <td>Station PASS</td>
+                    <td name="sta_pass">%sta_pass%</td>
+                </tr>
+                <tr>
+                    <td>Station RSSI</td>
+                    <td name="sta_rssi">%sta_rssi%</td>
+                </tr>
+                <tr>
+                    <td>Status</td>
+                    <td name="sta_con">%sta_con%</td>
+                </tr>
+                <tr>
+                    <td>Station IP</td>
+                    <td name="sta_ip">%sta_ip%</td>
+                </tr>
+                <tr>
+                    <td>AP SSID </td>
+                    <td name="ap_ssid">%ap_ssid%</td>
+                </tr>
+                <tr>
+                    <td>AP PASS</td>
+                    <td name="ap_pass">%ap_pass%</td>
+                </tr>
+                <tr>
+                    <td>AP IP</td>
+                    <td name="ap_ip">%ap_ip%</td>
+                </tr>
+            </tr>
+        </table>
+
+        <table>
+            <tr>
+                <th colspan="2"><b>CONNECTION</b></th>
+            </tr>
+            <tr>
+                <td>IP Address</td>
+                <td name="ip_ipaddr">%ip_ipaddr%</td>
+            </tr>
+            <tr>
+                <td>Subnet Mask</td>
+                <td name="ip_subnet">%ip_subnet%</td>
+            </tr>
+            <tr>
+                <td>Gateway</td>
+                <td name="ip_gate">%ip_gate%</td>
+            </tr>
+            <tr>
+                <td>DNS</td>
+                <td name="ip_dns">%ip_dns%</td>
+            </tr>
+            </tr>
+        </table>
+
+        <table>
+            <tr>
+                <th colspan="2"><b>DEVICE</b></th>
+            </tr>
+            <tr>
+                <td>ID Product</td>
+                <td name="id_pro">%id_pro%</td>
+            </tr>
+            <tr>
+                <td>Category</td>
+                <td name="category">
+                    <div class="text">Smart Power line</div>
+                </td>
+            </tr>
+            <tr>
+                <td>Target Server</td>
+                <td name="server">
+                    <div class="text">%server%</div>
+                </td>
+            </tr>
+            <tr>
+                <td>Api Key</td>
+                <td name="api_key">
+                    <div class="text">%api_key%</div>
+                </td>
+            </tr>
+            <tr>
+                <td>Satwil</td>
+                <td name="satwil">%satwil%</td>
+            </tr>
+            <tr>
+                <td>Level</td>
+                <td name="level">%level%</td>
+            </tr>
+            <tr>
+                <td>Site</td>
+                <td name="site">%site%</td>
+            </tr>
+            <tr>
+                <td>Longitude</td>
+                <td name="lng">%lng%</td>
+            </tr>
+            <tr>
+                <td>altitude</td>
+                <td name="alt">%alt%</td>
+            </tr>
+            <tr>
+                <td>HTTPCODE</td>
+                <td name="s_data">
+                    <div class="text">%s_data%</div>
+                </td>
+            </tr>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <th colspan="2"><b>SENSOR</b></th>
+            </tr>
+            <tr>
+                <td>Temp(°C)</td>
+                <td name="temp">%temp%</td>
+            </tr>
+            <tr>
+                <td>Humidity</td>
+                <td name="humid">%humid%</td>
+            </tr>
+            <tr>
+                <td>Voltage R(V)</td>
+                <td name="vr">%vr%</td>
+            </tr>
+            <tr>
+                <td>Voltage S(V)</td>
+                <td name="vs">%vs%</td>
+            </tr>
+            <tr>
+                <td>Voltage T(V)</td>
+                <td name="vt">%vt%</td>
+            </tr>
+            <tr>
+                <td>Current R(A)</td>
+                <td name="ir">%ir%</td>
+            </tr>
+            <tr>
+                <td>Current S(A)</td>
+                <td name="is">%is%</td>
+            </tr>
+            <tr>
+                <td>Current T(A)</td>
+                <td name="it">%it%</td>
+            </tr>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>
+)rawliteral"; const char setting_html[] PROGMEM = R"rawliteral(
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <!--for encoding type di htlm page-->
+    <meta name="description" content="Smart Power Line Interface">
+    <meta name="keywords" content="Samrt Power Line">
+    <meta name="author" content="Synapsis.id">
+    <title>Smart Power Line</title>
+    <script>
+        function submitMessage() {
+            alert("Saved value to ESP SPIFFS");
+            setTimeout(function() {
+                document.location.reload(false);
+            }, 500);
+        }
+    </script>
+    <style>
+        /* html { font-family: Helvetica; display: inline-block; margin: 0px auto; text-align: center;} */
+        /* .meantittle{font-family: Helvetica; display: inline-block; margin:auto; text-align: center;}
+        .teksbold{font-family: Helvetica;margin:auto; text-align: center;font-size: 40px;} */
+        
+        .text {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 500px;
+        }
+        
+        .text:hover {
+            overflow: visible;
+        }
+        
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        
+        td {
+            text-align: left;
+            padding: 8px;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f2f2f2
+        }
+        
+        th {
+            background-color: #04AA6D;
+            color: white;
+            text-align: center;
+            padding: 8px;
+        }
+        
+        input[type=text] {
+            font-size: 40px;
+            width: auto;
+            padding: 12px 20px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border: 3px solid #ccc;
+            -webkit-transition: 0.5s;
+            transition: 0.5s;
+            outline: none;
+        }
+        
+        select {
+            font-size: 40px;
+            width: 80%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border: 3px solid #ccc;
+            -webkit-transition: 0.5s;
+            transition: 0.5s;
+            outline: none;
+        }
+        
+        input[type=text]:focus {
+            border: 3px solid #555;
+        }
+        
+        input[type=button],
+        input[type=submit],
+        input[type=reset] {
+            font-size: 40px;
+            background-color: #04AA6D;
+            border: none;
+            color: white;
+            padding: 16px 32px;
+            text-decoration: none;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+        
+        a:link,
+        a:visited {
+            background-color: #f44336;
+            color: white;
+            padding: 14px 25px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        a:hover,
+        a:active {
+            background-color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="teksbold">
+        <table>
+            <tr>
+                <th colspan="2">
+                    <h1 style="text-align:center;">Smart Power Line</h1>
+                </th>
+                <tr>
+                    <td style="text-align:right;"><a href="/"><b>Home</b></a></td>
+                    <td style="text-align:left;"><a href="/setting"><b>Refresh</b></a></td>
+                </tr>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <!-- <th colspan="2"><h1 class="meantittle">SMART POWER LINE</h1></  th> -->
+                <th colspan="2"><b>NETWORK</b></th>
+            </tr>
+            <form action="/get">
+                <tr>
+                    <td>Station SSID</td>
+                    <td><input type="text" name="sta_ssid" value=%sta_ssid%></td>
+                </tr>
+                <tr>
+                    <td>Station PASS</td>
+                    <td><input type="text" name="sta_pass" value=%sta_pass%></td>
+                </tr>
+                <tr>
+                    <td>AP SSID </td>
+                    <td><input type="text" name="ap_ssid" value=%ap_ssid%></td>
+                </tr>
+                <tr>
+                    <td>AP PASS</td>
+                    <td><input type="text" name="ap_pass" value=%ap_pass%></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="text-align:right"><input type="submit" value="Submit" onclick="submitMessage()"></td>
+                </tr>
+            </form>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <th colspan="2"><b>CONNECTION</b></th>
+            </tr>
+            <form action="/get">
+                <tr>
+                    <td>IP Address</td>
+                    <td><input type="text" name="ip_ipaddr" value=%ip_ipaddr%></td>
+                </tr>
+                <tr>
+                    <td>Subnet Mask</td>
+                    <td><input type="text" name="ip_subnet" value=%ip_subnet%></td>
+                </tr>
+                <tr>
+                    <td>Default Gateway </td>
+                    <td><input type="text" name="ip_gate" value=%ip_gate%></td>
+                </tr>
+                <tr>
+                    <td>DNS Server</td>
+                    <td><input type="text" name="ip_dns" value=%ip_dns%></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="text-align:right"><input type="submit" value="Submit" onclick="submitMessage()"></td>
+                </tr>
+            </form>
+            </tr>
+        </table>
+        <table>
+            <th colspan="2"><b>DEVICE</b></th>
+            </tr>
+            <form action="/get">
+                <tr>
+                    <td>ID Product</td>
+                    <td><input type="text" name="id_pro" value=%id_pro%></td>
+                </tr>
+                <tr>
+                    <td>Category</td>
+                    <td><input type="text" name="category" value="Smart Power Line" disabled></td>
+                </tr>
+                <tr>
+                    <td>Target Server</td>
+                    <td><input type="text" name="server" value=%server%></td>
+                </tr>
+                <tr>
+                    <td>API Key</td>
+                    <td><input type="text" name="api_key" value=%api_key%></td>
+                </tr>
+                <tr>
+                    <td>Satwil</td>
+                    <td><input type="text" name="satwil" value=%satwil%></td>
+                </tr>
+                <tr>
+                    <td>Level</td>
+                    <td>
+                        <select name="level">
+                        <option value="polda">polda</option>
+                        <option value="polres">polres</option>
+                        <option value="mabes">mabes</option>
+                      </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Site</td>
+                    <td>
+                        <select name="site">
+                        <option value="rbs">rbs</option>
+                        <option value="mso">mso</option>
+                        <option value="cc">cc</option>
+                      </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Longitude</td>
+                    <td><input type="text" name="lng" value=%lng%></td>
+                </tr>
+                <tr>
+                    <td>Altitude</td>
+                    <td><input type="text" name="alt" value=%alt%></td>
+                </tr>
+                <tr>
+                    <td>Time Update</td>
+                    <td><input type="text" name="interval_update" value=%interval_update%></td>
+                </tr>
+                <tr>
+                    <td>Time Upload</td>
+                    <td><input type="text" name="interval_upload" value=%interval_upload%></td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td style="text-align:right"><input type="submit" value="Submit" onclick="submitMessage()"></td>
+                </tr>
+            </form>
+
+        </table>
+        <table>
+            <tr>
+                <th colspan="2"><b>SENSOR CALIBRATION</b></th>
+            </tr>
+            <form action="/get">
+                <tr>
+                    <td>Temperature</td>
+                    <td><input type="text" name="ctemp" value=%ctemp%></td>
+                </tr>
+                <tr>
+                    <td>Humidity</td>
+                    <td><input type="text" name="chumid" value=%chumid%></td>
+                </tr>
+                <tr>
+                    <td>Voltage R</td>
+                    <td><input type="text" name="cvr" value=%cvr%></td>
+                </tr>
+                <tr>
+                    <td>Voltage S</td>
+                    <td><input type="text" name="cvs" value=%cvs%></td>
+                </tr>
+                <tr>
+                    <td>Voltage T</td>
+                    <td><input type="text" name="cvt" value=%cvt%></td>
+                </tr>
+                <tr>
+                    <td>Current R</td>
+                    <td><input type="text" name="cir" value=%cir%></td>
+                </tr>
+                <tr>
+                    <td>Current S</td>
+                    <td><input type="text" name="cis" value=%cis%></td>
+                </tr>
+                <tr>
+                    <td>Current T</td>
+                    <td><input type="text" name="cit" value=%cit%></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="text-align:right"><input vref type="submit" value="Submit" onclick="submitMessage()"></td>
+                </tr>
+            </form>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>
+)rawliteral";
